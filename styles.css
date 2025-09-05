@@ -81,7 +81,7 @@ input[type="checkbox"] {
   accent-color: #E8B931; /* 黄色っぽい色に */
 }
 
-.todo-checkbox:checked + .todo-name {
+.todo-checkbox:checked + .todo-text {
   text-decoration: line-through;
   color: #999;
 }
