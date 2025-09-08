@@ -35,22 +35,27 @@ h1 {
   margin-bottom: 20px;
 }
 
-
 #add-btn {
   background-color: #E8B931;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: white;
-  transition: all 0.2s ease; /* アニメーションを滑らかに */
+  color: #fff;
+  border: 2px solid #E8B931;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#add-btn:hover {
+  background-color: #fff;
+  color: #E8B931;
+  border: 2px solid #E8B931;
 }
 
 #add-btn:active {
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); /* 影を小さく */
-  transform: translateY(2px); /* 少し下に動かす */
-  background-color: #d0a92e; /* 押した時に少し色を暗く */
+  transform: scale(0.98); /* ほんの少し縮むとカチッと感UP */
+  box-shadow: none;       /* 影を消して引き締める */
 }
 
 #todo-list {
@@ -84,4 +89,22 @@ input[type="checkbox"] {
 .todo-checkbox:checked + .todo-text {
   text-decoration: line-through;
   color: #999;
+}
+
+
+.delete-btn {
+  background-color: white;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+
+.delete-btn:hover {
+  background-color: #e74c3c;
+  color: white;
 }

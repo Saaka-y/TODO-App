@@ -21,14 +21,26 @@ form.addEventListener('submit', function(e) {
 
 function addTodo(todo) { // localStrageからの読み込み用に引数を追加
   let todoText = todoInput.value.trim();
+  let todoId = Date.now(); // 一意なIDを作成
 
   if(todo && todo.text) {
     todoText = todo.text;
+    todoId = todo.id;
   }
 
   if (todoText.length > 0) {
     const li = document.createElement('li');
     li.classList.add("todo-item");
+    li.setAttribute('data-id', todoId); // 一意のIDをDOMに持たせる
+
+    // Deleteボタンの追加と機能付与
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.addEventListener('click', () => {
+      ul.removeChild(li);
+      deleteTodoById(todoId);
+    });
 
     const checkbox = document.createElement('input');
     checkbox.type = "checkbox";
@@ -41,7 +53,7 @@ function addTodo(todo) { // localStrageからの読み込み用に引数を追�
 
     const span = document.createElement('span');
     span.classList.add("todo-text");
-    span.textContent = todoText; 
+    span.textContent = todoText;  // 忘れないように！
 
     checkbox.addEventListener('change', () => {
       saveTodos();
@@ -52,8 +64,9 @@ function addTodo(todo) { // localStrageからの読み込み用に引数を追�
       saveTodos();
     }
 
-    li.appendChild(checkbox)
+    li.appendChild(checkbox) // appendChildは引数1個だけ
     li.appendChild(span);
+    li.appendChild(deleteBtn);
     ul.appendChild(li);
     todoInput.value = '';
   }
@@ -65,8 +78,9 @@ function saveTodos() {
 
   listItems.forEach(item => {
     let todo = {
+      id: parseInt(item.getAttribute('data-id'), 10), // data-id属性からIDを取得し、数値に変換
       text: item.querySelector('.todo-text').textContent,
-      completed: item.querySelector('.todo-checkbox').checked
+      completed: item.querySelector('.todo-checkbox').checked, //item(li)の中からcheckboxを探すからこれでOK。checkedかどうかというbooleanを返す
     }
     todos.push(todo);
   })
@@ -74,4 +88,9 @@ function saveTodos() {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-
+// IDを使って特定のTodoをlocalStrageから削除
+function deleteTodoById(id) {
+  let todos = JSON.parse(localStorage.getItem('todos')) || [];
+  todos = todos.filter(todo => todo.id !== id);
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
