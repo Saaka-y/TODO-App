@@ -1,6 +1,5 @@
 # Todo App
 
-独学でHTMLから学び始め、ようやくJSを使えるようにまでなりました。
 ポートフォリオ用のシンプルなタスク管理Todoアプリです。（随時機能更新）
 
 **機能**  
@@ -14,7 +13,6 @@
 
 # Todo App
 
-Started learning HTML on my own, and now I’m finally able to use JavaScript.
 This is a simple Todo app for my portfolio (features updated regularly).
 
 **Features**  
