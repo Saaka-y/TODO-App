@@ -1,28 +1,59 @@
+// --- DOM Elements ---
 const todoInput = document.getElementById('todo-input');
 const addButton = document.getElementById('add-btn');
 const ul = document.getElementById('todo-list');
 const form = document.getElementById('form');
-
-const todos = JSON.parse(localStorage.getItem('todos')) || [];
-
-ul.innerHTML = ''; // 既存リストを一旦クリアしてから表示
-
-todos.forEach(todo => {
-  addTodo(todo);
-});  // ページ読み込み＆保存されているタスクを表示
+const toggleBtn = document.getElementById('theme-toggle');
 
 
+// --- Event Listeners ---
+
+// ダークモードのON/OFF切り替え処理
+toggleBtn.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark-mode');
+
+  // トグルボタンのテキストとクラスを切り替える
+  if (document.documentElement.classList.contains('dark-mode')) {
+    toggleBtn.textContent = "Light mode";
+    toggleBtn.classList.remove("light-btn");
+    toggleBtn.classList.add("dark-btn");
+  } else {
+    toggleBtn.textContent = "Dark mode";
+    toggleBtn.classList.remove("dark-btn");
+    toggleBtn.classList.add("light-btn");
+  }
+});
+
+// フォーム送信時（タスク追加）
 form.addEventListener('submit', function(e) {
   e.preventDefault();
-  addTodo(); 
+  addTodo();
 });
 
 
+// --- Initial Load ---
 
-function addTodo(todo) { // localStrageからの読み込み用に引数を追加
+// ローカルストレージからタスクを取得し、画面に表示
+const todos = JSON.parse(localStorage.getItem('todos')) || [];
+ul.innerHTML = ''; // 既存のリストをクリア
+
+todos.forEach(todo => {
+  addTodo(todo);
+});
+
+
+// --- Functions ---
+
+/**
+ * タスクを画面に追加し、必要に応じてローカルストレージに保存します
+ * @param {Object} [todo] - ローカルストレージから読み込むタスク（オプション）
+ *   todo = { id: number, text: string, completed: boolean }
+ */
+function addTodo(todo) {
   let todoText = todoInput.value.trim();
   let todoId = Date.now(); // 一意なIDを作成
 
+  // localStorageからの読み込み時は引数のデータを利用
   if(todo && todo.text) {
     todoText = todo.text;
     todoId = todo.id;
@@ -31,9 +62,9 @@ function addTodo(todo) { // localStrageからの読み込み用に引数を追�
   if (todoText.length > 0) {
     const li = document.createElement('li');
     li.classList.add("todo-item");
-    li.setAttribute('data-id', todoId); // 一意のIDをDOMに持たせる
+    li.setAttribute('data-id', todoId); // 一意のIDをDOM要素に持たせる
 
-    // Deleteボタンの追加と機能付与
+    // 削除ボタンを作成し、クリック時にタスク削除処理を実行
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("delete-btn");
@@ -42,53 +73,65 @@ function addTodo(todo) { // localStrageからの読み込み用に引数を追�
       deleteTodoById(todoId);
     });
 
+    // チェックボックス作成
     const checkbox = document.createElement('input');
     checkbox.type = "checkbox";
     checkbox.classList.add("todo-checkbox");
 
-    // localStrageからの読み込み時にchecked状態を復元
+    // localStorageからの読み込み時に完了状態を復元
     if(todo && todo.completed) {
       checkbox.checked = true;
-    };
+    }
 
-    const span = document.createElement('span');
-    span.classList.add("todo-text");
-    span.textContent = todoText;  // 忘れないように！
-
+    // チェック状態変更時に保存処理を呼ぶ
     checkbox.addEventListener('change', () => {
       saveTodos();
     });
 
-    // ✅ localStorageからの読み込みでない場合のみ保存する
+    // タスクテキストを表示するspan要素
+    const span = document.createElement('span');
+    span.classList.add("todo-text");
+    span.textContent = todoText;
+
+    // localStorageからの読み込みではない場合は保存
     if (!todo) {
       saveTodos();
     }
 
-    li.appendChild(checkbox) // appendChildは引数1個だけ
+    // liに子要素を追加し、ulに追加
+    li.appendChild(checkbox);
     li.appendChild(span);
     li.appendChild(deleteBtn);
     ul.appendChild(li);
+
+    // 入力欄をクリア
     todoInput.value = '';
   }
 }
 
+/**
+ * 画面のタスク一覧を取得し、ローカルストレージに保存する
+ */
 function saveTodos() {
   const listItems = document.querySelectorAll('.todo-item');
   const todos = [];
 
   listItems.forEach(item => {
-    let todo = {
-      id: parseInt(item.getAttribute('data-id'), 10), // data-id属性からIDを取得し、数値に変換
+    const todo = {
+      id: parseInt(item.getAttribute('data-id'), 10), // data-idからID取得
       text: item.querySelector('.todo-text').textContent,
-      completed: item.querySelector('.todo-checkbox').checked, //item(li)の中からcheckboxを探すからこれでOK。checkedかどうかというbooleanを返す
-    }
+      completed: item.querySelector('.todo-checkbox').checked, // チェックボックスの状態
+    };
     todos.push(todo);
-  })
+  });
 
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-// IDを使って特定のTodoをlocalStrageから削除
+/**
+ * 指定したIDのタスクをローカルストレージから削除する
+ * @param {number} id - 削除対象のタスクID
+ */
 function deleteTodoById(id) {
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
   todos = todos.filter(todo => todo.id !== id);

@@ -1,3 +1,6 @@
+/* ========================================
+   ✨ リセットと共通スタイル
+======================================== */
 * {
   margin: 0;
   padding: 0;
@@ -7,50 +10,117 @@
   letter-spacing: 0.1em;
 }
 
-body {
+/* ========================================
+   🎨 カラーテーマ変数（ライトモード）
+======================================== */
+:root {
+  --bg-color: #fff;
+  --text-color: #000;
+  --input-bg: rgba(232, 185, 49, 0.29);
+  --btn-bg: #E8B931;
+  --btn-text: #fff;
+  --border-color: #ccc;
+  --delete-btn-bg: #fff;
+  --delete-btn-border: #e74c3c;
+  --delete-btn-text: #e74c3c;
+  --accent-color: rgb(22, 111, 174);
+
   height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
+/* ========================================
+   🎨 カラーテーマ変数（ダークモード）
+======================================== */
+html.dark-mode {
+  --bg-color: #121212;
+  --text-color: #ede7e7;
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --btn-bg: #226ab3;
+  --btn-text: #fff;
+  --border-color: #444;
+  --delete-btn-bg: #e7783c;
+  --delete-btn-border: #e7783c;
+  --delete-btn-text: #fff;
+  --accent-color: #ffa726;
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* ========================================
+   🅷1 見出し
+======================================== */
 h1 {
   text-align: center;
   margin: 60px 0 20px 0;
   letter-spacing: 0;
 }
 
+/* ========================================
+   📥 入力グループ（入力＋ボタン）
+======================================== */
 .input-group {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
-#todo-input {
-  width: 300px;
+@media (min-width: 600px) {
+  .input-group {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .input-group .todo-input {
+    margin-bottom: 0;
+  }
+}
+
+/* ========================================
+   📝 入力欄・リスト共通
+======================================== */
+.todo-input, #todo-list {
+  width: 90%;
+  max-width: 300px;
   height: 40px;
+}
+
+/* ========================================
+   📝 入力欄
+======================================== */
+.todo-input {
   border: none;
-  border-bottom: 1px solid black;
-  background-color: rgba(232, 185, 49, 0.29);;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--input-bg);
   padding: 0 10px;
   font-size: 16px;
   margin-bottom: 20px;
+  color: var(--text-color);
 }
 
+/* ========================================
+   🔘 追加ボタン
+======================================== */
 #add-btn {
-  background-color: #E8B931;
-  color: #fff;
-  border: 2px solid #E8B931;
   padding: 0.4rem 0.8rem;
-  border-radius: 4px;
   font-size: 14px;
   font-weight: 600;
+  color: var(--btn-text);
+  background-color: var(--btn-bg);
+  border: 2px solid var(--btn-bg);
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 #add-btn:hover {
-  background-color: #fff;
-  color: #E8B931;
-  border: 2px solid #E8B931;
+  background-color: var(--bg-color);
+  color: var(--btn-bg);
+  border: 2px solid var(--btn-bg);
 }
 
 #add-btn:active {
@@ -58,22 +128,40 @@ h1 {
   box-shadow: none;       /* 影を消して引き締める */
 }
 
+/* ========================================
+   📋 Todoリスト
+======================================== */
 #todo-list {
   list-style-type: none;
-  width: 300px;
+  width: 90%;
+  max-width: 300px;
   margin: 3rem auto;
 }
 
+/* ========================================
+   📋 Todoアイテム
+======================================== */
 .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-color);
   gap: 0.5rem;
 }
 
+/* ========================================
+   📝 Todoテキスト
+======================================== */
+.todo-text {
+  flex-grow: 1;
+  font-size: 16px;
+  color: var(--text-color);
+}
 
+/* ========================================
+   ✅ チェックボックス
+======================================== */
 .todo-checkbox {
   margin-right: 0.5rem;
   width: 20px;
@@ -83,28 +171,98 @@ h1 {
 }
 
 input[type="checkbox"] {
-  accent-color: #E8B931; /* 黄色っぽい色に */
+  accent-color: var(--btn-bg); 
 }
 
 .todo-checkbox:checked + .todo-text {
   text-decoration: line-through;
-  color: #999;
+  color: var(--border-color);
 }
 
-
+/* ========================================
+   🗑️ 削除ボタン
+======================================== */
 .delete-btn {
-  background-color: white;
-  color: #e74c3c;
-  border: 1px solid #e74c3c;
   padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
+
+  background-color: var(--delete-btn-bg);
+  color: var(--delete-btn-text);
+  border: 1px solid var(--delete-btn-border);
+  border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
-
 .delete-btn:hover {
-  background-color: #e74c3c;
-  color: white;
+  background-color: var(--delete-btn-text);
+  color: var(--delete-btn-bg);
+}
+
+/* ========================================
+   🌓 テーマ切替ボタン
+======================================== */
+#theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+
+  padding: 0.3rem 0.5rem;
+  font-size: 0.5rem;
+  cursor: pointer;
+  z-index: 999;
+  overflow: hidden;
+
+  background-color: var(--bg-color);
+  color: var(--accent-color);
+
+  border: none;
+  border-bottom: 1px solid var(--accent-color);
+
+  transition: background-color 0.3s ease;
+  /* 疑似要素用にrelativeつけないといけない時もあるけど、
+     今回は絶対位置なのでつけなくてOK */
+  /* position: relative; はつけていません */
+}
+
+/* 疑似要素で背景スライドを実現 */
+#theme-toggle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: var(--accent-color);
+  z-index: -1;
+  transition: width 0.3s ease;
+}
+
+/* ホバー時の背景スライド + テキスト色反転 */
+#theme-toggle:hover::before {
+  width: 100%;
+}
+
+#theme-toggle:hover {
+  color: var(--btn-text);
+}
+
+/* ========================================
+   🌓 ダークモード時のテーマ切替ボタン色
+======================================== */
+html.dark-mode #theme-toggle {
+  color: var(--accent-color); /* 明るいオレンジ */
+  border-bottom: 1px solid var(--accent-color);
+}
+
+html.dark-mode #theme-toggle::before {
+  background-color: var(--accent-color);
+}
+
+html.dark-mode #theme-toggle:hover::before {
+  width: 100%;
+}
+
+html.dark-mode #theme-toggle:hover {
+  color: var(--btn-text);
 }
