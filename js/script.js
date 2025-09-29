@@ -6,8 +6,6 @@ const form = document.getElementById('form');
 const toggleBtn = document.getElementById('theme-toggle');
 
 
-// --- Event Listeners ---
-
 // ダークモードのON/OFF切り替え処理
 toggleBtn.addEventListener('click', () => {
   document.documentElement.classList.toggle('dark-mode');
@@ -45,8 +43,7 @@ todos.forEach(todo => {
 // --- Functions ---
 
 /**
- * タスクを画面に追加し、必要に応じてローカルストレージに保存します
- * @param {Object} [todo] - ローカルストレージから読み込むタスク（オプション）
+ * @param {Object} [todo] - 追加するタスクのデータ（ローカルストレージからの読み込み時に使用）
  *   todo = { id: number, text: string, completed: boolean }
  */
 function addTodo(todo) {
@@ -137,3 +134,5 @@ function deleteTodoById(id) {
   todos = todos.filter(todo => todo.id !== id);
   localStorage.setItem('todos', JSON.stringify(todos));
 }
+
+
